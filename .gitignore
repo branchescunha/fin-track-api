@@ -1,5 +1,11 @@
 node_modules
+
 # Keep environment variables out of version control
 .env
+.env.local
 
 /generated/prisma
+
+# Firebase Admin SDK private keys
+*-firebase-adminsdk-*.json
+*.firebase-adminsdk*.json
