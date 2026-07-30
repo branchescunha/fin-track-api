@@ -1,37 +1,37 @@
 # FinTrack API
 
-API REST para gerenciamento financeiro, desenvolvida com Node.js, Fastify, TypeScript, Prisma, MongoDB e autenticação via Firebase.
+API REST do FinTrack para controle financeiro pessoal, com autenticação via Firebase, persistência em MongoDB e validação de dados no backend.
 
-O projeto foi criado com foco em organização, validação de dados, autenticação de usuários e controle de transações financeiras por período, categoria e tipo.
+O backend concentra as regras de criação, listagem, resumo e exclusão de transações, além da inicialização das categorias globais usadas pela interface.
 
 ## Funcionalidades
 
-* Autenticação de rotas com Firebase Authentication
-* Integração com MongoDB utilizando Prisma ORM
-* Inicialização automática de categorias globais
-* Criação de transações financeiras
-* Listagem de transações por usuário autenticado
-* Filtros por mês, ano, categoria e tipo
-* Exclusão de transações
-* Resumo financeiro mensal
-* Histórico mensal de receitas e despesas
-* Validação de dados com Zod
-* Organização de rotas, controllers, middlewares, schemas e services
-* Padronização de código com Biome
+- Autenticação de rotas privadas com Firebase Authentication.
+- Integração com MongoDB por meio do Prisma ORM.
+- Inicialização automática de categorias globais.
+- Criação de receitas e despesas.
+- Listagem de transações por usuário autenticado.
+- Filtros por mês, ano, categoria e tipo.
+- Exclusão de transações.
+- Resumo financeiro mensal com saldo, receitas e despesas.
+- Histórico mensal para gráficos do dashboard.
+- Validação de payloads e query params com Zod.
+- CORS configurável por ambiente.
+- Logs básicos de erro usando Fastify/Pino.
 
-## Tecnologias utilizadas
+## Tecnologias Utilizadas
 
-* Node.js
-* TypeScript
-* Fastify
-* Prisma ORM
-* MongoDB
-* Firebase Admin SDK
-* Zod
-* Day.js
-* Biome
+- Node.js
+- TypeScript
+- Fastify
+- Prisma ORM
+- MongoDB
+- Firebase Admin SDK
+- Zod
+- Day.js
+- Biome
 
-## Rotas principais
+## Rotas Principais
 
 ```txt
 GET     /api/health
@@ -43,7 +43,19 @@ GET     /api/transactions/summary
 GET     /api/transactions/historical
 ```
 
-## Estrutura do projeto
+## Variáveis de Ambiente
+
+```txt
+PORT
+DATABASE_URL
+FRONTEND_URL
+NODE_ENV
+FIREBASE_PROJECT_ID
+FIREBASE_PRIVATE_KEY
+FIREBASE_CLIENT_EMAIL
+```
+
+## Estrutura do Projeto
 
 ```txt
 fin-track-api/
@@ -51,38 +63,28 @@ fin-track-api/
 │   └── schema.prisma
 ├── src/
 │   ├── config/
-│   │   ├── env.ts
-│   │   ├── firebase.ts
-│   │   └── prisma.ts
 │   ├── controllers/
-│   │   ├── transactions/
-│   │   │   ├── createTransaction.controller.ts
-│   │   │   ├── deleteTransaction.controller.ts
-│   │   │   ├── getHistoricalTransactions.controller.ts
-│   │   │   ├── getTransactions.controller.ts
-│   │   │   └── getTransactionsSummary.controller.ts
-│   │   └── category.controller.ts
+│   │   └── transactions/
 │   ├── middlewares/
-│   │   └── auth.middleware.ts
 │   ├── routes/
-│   │   ├── category.routes.ts
-│   │   ├── index.ts
-│   │   └── transaction.routes.ts
 │   ├── schemas/
-│   │   └── transaction.schema.ts
 │   ├── services/
-│   │   └── globalCategories.service.ts
 │   ├── types/
-│   │   ├── category.types.ts
-│   │   └── transaction.types.ts
 │   ├── app.ts
 │   └── server.ts
 ├── .env.example
-├── .gitignore
 ├── biome.json
 ├── package.json
 └── tsconfig.json
 ```
+
+## Qualidade Técnica
+
+- TypeScript em modo `strict`.
+- Separação entre rotas, controllers, middlewares, schemas e services.
+- Respostas públicas de erro sem stack trace.
+- Configuração de CORS preparada para diferenciar desenvolvimento e produção.
+- `.env` e arquivos sensíveis devem permanecer fora do versionamento.
 
 ## Autor
 
