@@ -21,6 +21,13 @@ export const createTransactionSchema = z.object({
   }),
 });
 
+export const updateTransactionSchema = createTransactionSchema.partial().refine(
+  (data) => Object.keys(data).length > 0,
+  {
+    message: "Informe ao menos um campo para atualizar",
+  },
+);
+
 export const getTransactionsSchema = z.object({
   month: z.string().optional(),
   year: z.string().optional(),
@@ -58,3 +65,4 @@ export type GetHistoricalTransactionsQuery = z.infer<typeof getHistoricalTransac
 export type GetTransactionsQuery = z.infer<typeof getTransactionsSchema>;
 export type GetTransactionsSummaryQuery = z.infer<typeof getTransactionsSummarySchema>;
 export type DeleteTransactionParams = z.infer<typeof deleteTransactionSchema>;
+export type UpdateTransactionBody = z.infer<typeof updateTransactionSchema>;
