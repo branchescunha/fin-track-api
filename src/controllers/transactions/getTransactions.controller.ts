@@ -3,9 +3,21 @@ import utc from "dayjs/plugin/utc";
 import type { FastifyReply, FastifyRequest } from "fastify";
 import prisma from "../../config/prisma";
 import type { GetTransactionsQuery } from "../../schemas/transaction.schema";
-import type { TransactionFilter } from "../../types/transaction.types";
+import type { TransactionFilter, TransactionType } from "../../types/transaction.types";
 
 dayjs.extend(utc);
+
+type TransactionWithCategoryId = {
+  categoryId: string;
+  type: TransactionType;
+};
+
+type CategoryLookup = {
+  id: string;
+  color: string;
+  name: string;
+  type: TransactionType;
+};
 
 export const getTransactions = async (
   request: FastifyRequest<{ Querystring: GetTransactionsQuery }>,
@@ -41,7 +53,9 @@ export const getTransactions = async (
       orderBy: { date: "desc" },
     });
 
-    const categoryIds = Array.from(new Set(transactions.map((transaction) => transaction.categoryId)));
+    const categoryIds = Array.from(
+      new Set(transactions.map((transaction: TransactionWithCategoryId) => transaction.categoryId)),
+    );
     const categories = await prisma.category.findMany({
       where: {
         id: {
@@ -55,10 +69,12 @@ export const getTransactions = async (
         type: true,
       },
     });
-    const categoriesById = new Map(categories.map((category) => [category.id, category]));
+    const categoriesById = new Map(
+      categories.map((category: CategoryLookup) => [category.id, category]),
+    );
 
     reply.send(
-      transactions.map((transaction) => ({
+      transactions.map((transaction: TransactionWithCategoryId) => ({
         ...transaction,
         category: categoriesById.get(transaction.categoryId) ?? {
           id: transaction.categoryId,

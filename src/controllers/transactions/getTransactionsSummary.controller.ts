@@ -8,6 +8,18 @@ import type { TransactionSummary } from "../../types/transaction.types";
 
 dayjs.extend(utc);
 
+type SummaryTransaction = {
+  amount: number;
+  categoryId: string;
+  type: string;
+};
+
+type SummaryCategory = {
+  id: string;
+  name: string;
+  color: string;
+};
+
 export const getTransactionsSummary = async (
   request: FastifyRequest<{ Querystring: GetTransactionsSummaryQuery }>,
   reply: FastifyReply,
@@ -38,7 +50,9 @@ export const getTransactionsSummary = async (
       },
     });
 
-    const categoryIds = Array.from(new Set(transactions.map((transaction) => transaction.categoryId)));
+    const categoryIds = Array.from(
+      new Set(transactions.map((transaction: SummaryTransaction) => transaction.categoryId)),
+    );
     const categories = await prisma.category.findMany({
       where: {
         id: {
@@ -51,7 +65,9 @@ export const getTransactionsSummary = async (
         color: true,
       },
     });
-    const categoriesById = new Map(categories.map((category) => [category.id, category]));
+    const categoriesById = new Map(
+      categories.map((category: SummaryCategory) => [category.id, category]),
+    );
 
     let totalExpenses = 0;
     let totalIncomes = 0;

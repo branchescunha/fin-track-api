@@ -8,6 +8,12 @@ import "dayjs/locale/pt-br";
 dayjs.locale("pt-br");
 dayjs.extend(utc);
 
+type HistoricalTransaction = {
+  amount: number;
+  date: Date;
+  type: string;
+};
+
 export const getHistoricalTransactions = async (
   request: FastifyRequest<{ Querystring: GetHistoricalTransactionsQuery }>,
   reply: FastifyReply,
@@ -55,7 +61,7 @@ export const getHistoricalTransactions = async (
       };
     });
 
-    transactions.forEach((transaction) => {
+    transactions.forEach((transaction: HistoricalTransaction) => {
       const monthKey = dayjs.utc(transaction.date).format("MMM/YYYY");
       const monthData = monthlyData.find((m) => m.name === monthKey);
 
