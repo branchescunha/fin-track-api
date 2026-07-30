@@ -16,7 +16,9 @@ const configuredOrigins =
 const developmentOrigins = ["http://localhost:5173", "http://127.0.0.1:5173"];
 
 const allowedOrigins = new Set(
-  env.NODE_ENV === "prod" ? configuredOrigins : [...developmentOrigins, ...configuredOrigins],
+  env.NODE_ENV === "prod" || env.NODE_ENV === "production"
+    ? configuredOrigins
+    : [...developmentOrigins, ...configuredOrigins],
 );
 
 app.register(cors, {

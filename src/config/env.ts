@@ -24,8 +24,8 @@ const envSchema = z
     PORT: z.string().default("3001").transform(Number),
     DATABASE_URL: z.string().min(5, "DATABASE_URL é obrigatório"),
     FRONTEND_URL: z.string().optional(),
-    NODE_ENV: z.enum(["dev", "test", "prod"], {
-      message: "O NODE ENV deve ser 'dev', 'test' ou 'prod'",
+    NODE_ENV: z.enum(["dev", "test", "prod", "production"], {
+      message: "O NODE ENV deve ser 'dev', 'test', 'prod' ou 'production'",
     }),
 
     // FIREBASE
@@ -36,7 +36,7 @@ const envSchema = z
   .superRefine((data, ctx) => {
     const frontendOrigins = parseFrontendOrigins(data.FRONTEND_URL);
 
-    if (data.NODE_ENV === "prod" && frontendOrigins.length === 0) {
+    if ((data.NODE_ENV === "prod" || data.NODE_ENV === "production") && frontendOrigins.length === 0) {
       ctx.addIssue({
         code: "custom",
         path: ["FRONTEND_URL"],
