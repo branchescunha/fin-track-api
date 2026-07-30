@@ -65,7 +65,7 @@ export const getTransactionsSummary = async (
         color: true,
       },
     });
-    const categoriesById = new Map(
+    const categoriesById = new Map<string, SummaryCategory>(
       categories.map((category: SummaryCategory) => [category.id, category]),
     );
 
