@@ -1,59 +1,65 @@
 # FinTrack API
 
-API REST do FinTrack para controle financeiro pessoal, com autenticação via Firebase, persistência em MongoDB e validação de dados no backend.
+API REST do FinTrack, responsável pela autenticação, persistência e processamento dos dados financeiros usados pela interface web.
 
-O backend concentra as regras de criação, listagem, resumo e exclusão de transações, além da inicialização das categorias globais usadas pela interface.
+O projeto está publicado em produção no Render e integrado ao frontend oficial do FinTrack.
+
+## Produção
+
+- API oficial: https://fin-track-api-60lr.onrender.com
+- Frontend oficial: https://fintrackwallet.vercel.app
+- Status: publicado em produção
 
 ## Funcionalidades
 
 - Autenticação de rotas privadas com Firebase Authentication.
-- Integração com MongoDB por meio do Prisma ORM.
-- Inicialização automática de categorias globais.
-- Criação de receitas e despesas.
-- Listagem de transações por usuário autenticado.
-- Filtros por mês, ano, categoria e tipo.
-- Exclusão de transações.
-- Resumo financeiro mensal com saldo, receitas e despesas.
+- Persistência de dados no MongoDB Atlas.
+- Integração com Prisma ORM.
+- Inicialização de categorias globais.
+- Criação, edição, listagem e exclusão de transações.
+- Resumo financeiro mensal com receitas, despesas e saldo.
 - Histórico mensal para gráficos do dashboard.
+- Filtros por mês, ano, tipo e categoria.
 - Validação de payloads e query params com Zod.
 - CORS configurável por ambiente.
-- Logs básicos de erro usando Fastify/Pino.
+- Logs básicos de erro com Fastify/Pino.
 
-## Tecnologias Utilizadas
-
-- Node.js
-- TypeScript
-- Fastify
-- Prisma ORM
-- MongoDB
-- Firebase Admin SDK
-- Zod
-- Day.js
-- Biome
-
-## Rotas Principais
+## Endpoints Principais
 
 ```txt
 GET     /api/health
 GET     /api/categories
 GET     /api/transactions
 POST    /api/transactions
+GET     /api/transactions/:id
+PATCH   /api/transactions/:id
 DELETE  /api/transactions/:id
 GET     /api/transactions/summary
 GET     /api/transactions/historical
 ```
 
-## Variáveis de Ambiente
+## Tecnologias
 
-```txt
-PORT
-DATABASE_URL
-FRONTEND_URL
-NODE_ENV
-FIREBASE_PROJECT_ID
-FIREBASE_PRIVATE_KEY
-FIREBASE_CLIENT_EMAIL
-```
+- Node.js
+- TypeScript
+- Fastify
+- Prisma ORM
+- MongoDB Atlas
+- Firebase Admin SDK
+- Zod
+- Day.js
+- Biome
+
+## Autenticação
+
+A API usa Firebase Authentication para proteger as rotas privadas. As requisições autenticadas devem enviar um token Bearer válido no header `Authorization`.
+
+## Deploy
+
+- Plataforma: Render
+- Banco de dados: MongoDB Atlas
+- Autenticação: Firebase Authentication
+- Frontend integrado: https://fintrackwallet.vercel.app
 
 ## Estrutura do Projeto
 
@@ -72,8 +78,8 @@ fin-track-api/
 │   ├── types/
 │   ├── app.ts
 │   └── server.ts
-├── .env.example
 ├── biome.json
+├── .env.example
 ├── package.json
 └── tsconfig.json
 ```
@@ -82,9 +88,10 @@ fin-track-api/
 
 - TypeScript em modo `strict`.
 - Separação entre rotas, controllers, middlewares, schemas e services.
-- Respostas públicas de erro sem stack trace.
-- Configuração de CORS preparada para diferenciar desenvolvimento e produção.
-- `.env` e arquivos sensíveis devem permanecer fora do versionamento.
+- Respostas públicas de erro sem exposição de stack trace.
+- Configuração de produção preparada para Render.
+- Bind do servidor em `0.0.0.0` para ambientes de deploy.
+- `.env` e arquivos sensíveis mantidos fora do versionamento.
 
 ## Autor
 
